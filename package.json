@@ -1,0 +1,34 @@
+{
+  "name": "uglify-merge-js",
+  "version": "0.0.1",
+  "description": "Compress and merges JavaScript files according to Sass pattern",
+  "main": "cli.js",
+  "scripts": {
+    "test": "um-js"
+  },
+  "dependencies": {
+    "command-line-args": "latest",
+    "command-line-usage": "latest",
+    "uglify-js": "latest",
+    "fs": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arsors/uglify-merge-js.git"
+  },
+  "keywords": [
+    "Uglify",
+    "Merge",
+    "JavaScript",
+    "npm"
+  ],
+  "author": "Marvin Schieler",
+  "license": "UNLICENSED",
+  "bin": {
+    "uglify-merge": "./cli.js"
+  },
+  "bugs": {
+    "url": "https://github.com/arsors/uglify-merge-js/issues"
+  },
+  "homepage": "https://github.com/arsors/uglify-merge-js#readme"
+}
