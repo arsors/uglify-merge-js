@@ -171,7 +171,7 @@ function getFilenamesFromRootJsContent(content) {
   // Get path/filenames from content (remove import, ", ;, /, by regex)
   // thx to: Titus (https://stackoverflow.com/a/54381158/7475811)
   var filenames = [];
-  const regex = /[\S]*(?<!\/\/)import[^"'`]*["'`]\/*([^;]+)["'`][^;]*;/gm
+  const regex = /[\S]*(?<!\/\/[^"'`]*)import[^"'`]*["'`]\/*([^;]+)["'`][^;]*;/gm
   while ((m = regex.exec(content)) !== null) {
     // Prevent regex endless loop
     if (m.index === regex.lastIndex) regex.lastIndex++;
