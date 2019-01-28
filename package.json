@@ -1,6 +1,6 @@
 {
   "name": "uglify-merge-js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Compress and merges JavaScript files according to Sass pattern",
   "main": "cli.js",
   "scripts": {
