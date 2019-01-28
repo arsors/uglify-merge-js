@@ -139,8 +139,8 @@ function getFilenamesFromRootJs(dir) {
     // Find root file and exlude filenames
     files.forEach(function(file) {
       if (
-       file.indexOf('.js') !== -1         // if it is a javascript file
-       && file.indexOf('.min.js') === -1  // exlude .min.js file
+       file.endsWith('.js') // if it is a javascript file
+       && !file.endsWith('.min.js') // exlude .min.js file
        && file.charAt(0) !== "_"          // exlude partials file
       ) {
         // Check if file string starts path
@@ -156,7 +156,7 @@ function getFilenamesFromRootJs(dir) {
       }
     });
     if (filenames.length !== 0) return filenames;
-    else throw cError+"No root JavaScript file was found!"+cReset;
+    else {console.log( cError+"No root JavaScript file was found!"+cReset ); process.exit();}
   }
   catch(err) {
     throw cError+"Cant't find Source-Folder: "+dir+cReset;
@@ -198,7 +198,7 @@ function getContentOfFiles(filenames) {
   filenames.forEach(function(file) {
     if (
      file.endsWith('.js') // if it is a javascript file
-     && !file.endsWith('.min.js') // exlude .min.js file
+     && options.output != file.replace(path, "") // exlude output file
     ) {
       // Check if file string starts path
       var file = (file.startsWith(path)) ? file : path+file;
