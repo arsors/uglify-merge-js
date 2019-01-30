@@ -17,8 +17,9 @@ var pjson = require('./package.json');
  * Init command-line-usage
  */
 const optionDefinitions = [
-  { name: 'src', alias: 's', type: String, defaultValue: "./" },       // Source folder
+  { name: 'src', alias: 's', type: String, defaultValue: "./" },                // Source folder
   { name: 'output', alias: 'o', type: String, defaultValue: "scripts.min.js" }, // Output folder/path/filename.min.js
+  { name: 'uglify', alias: 'u', type: String },                                 // Options for uglify-js
   { name: 'all', alias: 'a', type: Boolean, defaultValue: false },              // Get all js files from source folder
   { name: 'recursive', alias: 'r', type: Boolean, defaultValue: false },        // (Optional for -all) Read all files recursive from source folder
   { name: 'charset', alias: 'c', type: String, defaultValue: "utf8" },          // Set charset
@@ -62,6 +63,18 @@ var UglifyJS = require("uglify-js");
  */
 if (options.recursive && !options.all)
   throw cError+"You set --recursive (-r) without --all (-a)"+cReset;
+
+/**
+ * Convert uglify option string to object
+ */
+if (options.uglify) {
+  try {
+    options.uglify = JSON.parse(options.uglify);
+  }
+  catch {
+    throw cError+"Your uglify option string cannot be converted to an object due to syntax errors."+cReset;
+  }
+}
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
@@ -220,7 +233,7 @@ function getContentOfFiles(filenames) {
  */
 function setContentUglified(content) {
   // Uglify the content;
-  var contentUglify = UglifyJS.minify(content);
+  var contentUglify = UglifyJS.minify(content, options.uglify);
 
   // On syntax error
   if (contentUglify.error)
@@ -293,6 +306,12 @@ function printHelp() {
     {
       header: 'Optional parameters',
       optionList: [
+        {
+          name: 'uglify',
+          alias: 'u',
+          typeLabel: '{underline String}',
+          description: 'Manipulate the uglify-js api options. You need to provide a valid json string. You should carefully read the docs before use this https://github.com/arsors/uglify-merge-js#uglify'
+        },
         {
           name: 'charset',
           alias: 'c',
