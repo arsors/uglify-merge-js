@@ -195,6 +195,7 @@ function getFilenamesFromRootJsContent(content) {
     }
     // Add _ before file, if is missing
     filename = filename.replace(/(\/|^)([^_][^/]+\.js)$/, "$1_$2")
+    filename = filename.replace("_!", "")
     // Push
     filenames.push(filename)
   }

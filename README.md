@@ -38,6 +38,9 @@ import 'partial_2';
 import 'subfolder/partial_3';
 //import 'subfolder/partial_4'; // Uncomment with // to exclude files /**/ is not supported
 ```
+#### Additional cases
+Sometimes you need to link directly to a file that don't have a underscore (_). You can achive this by including a exclamation mark (!) before the file name.
+```import '../vendor/components/jquery/!jquery.slim';```
 
 ---
 
