@@ -71,7 +71,7 @@ if (options.uglify) {
   try {
     options.uglify = JSON.parse(options.uglify);
   }
-  catch {
+  catch (err) {
     throw cError+"Your uglify option string cannot be converted to an object due to syntax errors."+cReset;
   }
 }
