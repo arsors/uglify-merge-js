@@ -23,10 +23,14 @@
     "npm"
   ],
   "author": "Marvin Schieler",
+  "contributors": [
+    "Marco Sadowski <marco@camefrom.space>"
+  ],
   "license": "LGPL-3.0",
   "bin": {
     "uglify-merge": "./cli.js"
   },
+  "license": "LGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/arsors/uglify-merge-js/issues"
   },
