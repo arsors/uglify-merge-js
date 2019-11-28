@@ -38,15 +38,16 @@ import 'partial_2';
 import 'subfolder/partial_3';
 //import 'subfolder/partial_4'; // Uncomment with // to exclude files /**/ is not supported
 ```
+#### Additional cases
+Sometimes you need to link directly to a file that don't have a underscore (_). You can achive this by including a exclamation mark (!) before the file name.
+```import '../vendor/components/jquery/!jquery.slim';```
+
 #### Using hosted Javascript Files 
 If you want to include external sources via http then just include them like this:
 ```js
 import 'https://example.com/jQuery.js';
 ```
 Please note that the file get cached. If you would like to download the file any time when using uglify-merge-js then you should use the nocache option `-n`
-#### Additional cases
-Sometimes you need to link directly to a file that don't have a underscore (_). You can achive this by including a exclamation mark (!) before the file name.
-```import '../vendor/components/jquery/!jquery.slim';```
 
 ---
 
