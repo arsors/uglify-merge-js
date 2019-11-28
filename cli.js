@@ -24,6 +24,7 @@ const optionDefinitions = [
   { name: 'recursive', alias: 'r', type: Boolean, defaultValue: false },        // (Optional for -all) Read all files recursive from source folder
   { name: 'charset', alias: 'c', type: String, defaultValue: "utf8" },          // Set charset
   { name: 'quiet', alias: 'q', type: Boolean, defaultValue: false },            // Quiet Shell Mode
+  { name: 'nocache', alias: 'n', type: Boolean, defaultValue: false },          // No Cache Mode (for external imports)
   { name: 'help', alias: 'h', type: Boolean, defaultValue: false }              // Print Help
 ];
 const commandLineArgs = require('command-line-args');
@@ -50,6 +51,12 @@ if (options.help) printHelp();
  * Init fs
  */
 var fs = require('fs');
+
+
+/**
+ * Init sync-request
+ */
+var syncRequest = require('sync-request');
 
 /**
  * Init uglify-js
@@ -189,17 +196,43 @@ function getFilenamesFromRootJsContent(content) {
     // Prevent regex endless loop
     if (m.index === regex.lastIndex) regex.lastIndex++;
     // Add .js, if is missing
-    let filename = m[1]
-    if (!filename.endsWith(".js")) {
-      filename = `${filename}.js`
+    let filename = m[1];
+    if (filename.startsWith("http://")|| filename.startsWith("https://")) {
+      filename = downloadFile(filename);
+    } else {
+      if (!filename.endsWith(".js")) {
+        filename = `${filename}.js`
+      }
+      // Add _ before file, if is missing
+      filename = filename.replace(/(\/|^)([^_][^/]+\.js)$/, "$1_$2");
+      filename = filename.replace("_!", "");
     }
-    // Add _ before file, if is missing
-    filename = filename.replace(/(\/|^)([^_][^/]+\.js)$/, "$1_$2")
-    filename = filename.replace("_!", "")
+
     // Push
     filenames.push(filename)
   }
   return filenames;
+}
+
+/**
+ * Download File
+ */
+
+function downloadFile(uri) {
+  const regex = /(\w|[-.])+$/
+  const filename = regex.exec(uri)[0];
+  console.log("Try to request",uri);
+  var now = new Date().getTime();
+
+  //check for nocache option or if file is older then 4 days.
+  if (options.nocache || fs.statSync(path + filename).mtimeMs < (now - 20736000)){
+    var res = syncRequest('GET', uri);
+    console.log("Try to save to ",path + filename);
+    fs.writeFileSync(path + filename, res.body.toString(options.charset));
+  } else {
+    console.log("File loaded from Cache.")
+  }
+  return filename;
 }
 
 /**
@@ -338,6 +371,12 @@ function printHelp() {
           description: 'Hide the output during the process. So you have it a bit clearer in the shell window.'
         },
         {
+          name: 'nocache',
+          alias: 'n',
+          typeLabel: '{underline Boolean}',
+          description: 'Deactivate caching for remote imports.'
+        },
+        {
           name: 'help',
           alias: 'h',
           description: 'Print this usage guide.'
@@ -345,7 +384,7 @@ function printHelp() {
       ]
     }
   ]
-  const usage = commandLineUsage(sections)
-  console.log(usage)
+  const usage = commandLineUsage(sections);
+  console.log(usage);
   process.exit();
 }

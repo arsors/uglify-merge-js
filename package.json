@@ -9,8 +9,9 @@
   "dependencies": {
     "command-line-args": "latest",
     "command-line-usage": "latest",
-    "uglify-js": "latest",
-    "fs": "latest"
+    "fs": "latest",
+    "sync-request": "^6.1.0",
+    "uglify-js": "latest"
   },
   "repository": {
     "type": "git",
@@ -26,11 +27,10 @@
   "contributors": [
     "Marco Sadowski <marco@camefrom.space>"
   ],
-  "license": "LGPL-3.0",
+  "license": "LGPL-3.0-only",
   "bin": {
     "uglify-merge": "./cli.js"
   },
-  "license": "LGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/arsors/uglify-merge-js/issues"
   },
