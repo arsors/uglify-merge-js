@@ -219,18 +219,20 @@ function getFilenamesFromRootJsContent(content) {
  */
 
 function downloadFile(uri) {
-  const regex = /(\w|[-.])+$/
+  const regex = /(\w|[-.])+$/;
   const filename = regex.exec(uri)[0];
-  console.log("Try to request",uri);
   var now = new Date().getTime();
+  var loadFromCache = false;
 
   //check for nocache option or if file is older then 4 days.
-  if (options.nocache || fs.statSync(path + filename).mtimeMs < (now - 20736000)){
+  if ( fs.existsSync(path + filename) ) if (fs.statSync(path + filename).mtimeMs > (now - 20736000)) loadFromCache = true;
+  if (options.nocache || !loadFromCache) {
+    console.log("Request", uri);
     var res = syncRequest('GET', uri);
-    console.log("Try to save to ",path + filename);
+    console.log("Save to ",path + filename);
     fs.writeFileSync(path + filename, res.body.toString(options.charset));
   } else {
-    console.log("File loaded from Cache.")
+    console.log("Load from Cache", uri);
   }
   return filename;
 }
